@@ -1,0 +1,11 @@
+
+Set up your project structure, it depends on the kind of project that we are building.
+So specifically we will follow one kind of architecture.
+And then based on that particular architecture, we will be writing the codes over here and we will
+create that modular structure okay.
+
+src -- all my project build inside this particular folder
+main.py --- all components will be called step by step.
+
+What is PyPI? (Simple Explanation)
+PyPI = Python Package Index (like an app store for Python code)
