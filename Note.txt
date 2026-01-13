@@ -9,3 +9,10 @@ main.py --- all components will be called step by step.
 
 What is PyPI? (Simple Explanation)
 PyPI = Python Package Index (like an app store for Python code)
+
+
+
+*** Streamlit ***
+ with st.sidebar:
+ 1. with means: everything inside belongs to sidebar.
+ 2. Any Streamlit element inside will appear on the left sidebar.

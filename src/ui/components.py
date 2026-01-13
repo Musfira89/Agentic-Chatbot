@@ -25,11 +25,19 @@ def render_sidebar():
         return groq_api_key, llm, usecase, model
 
    
+#These functions manage chat memory.
+# Purpose: initialize chat memory 
+# Check: “Does session memory already have chat messages?”
+# First app load → NO
+# Later reloads → YES 
+# Create empty list . This list will store all chat messages
+ 
 def init_chat_state():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
 
+# display old messages
 def render_chat_history():
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):

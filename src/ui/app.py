@@ -17,10 +17,10 @@ def main():
 
     st.title(PAGE_TITLE)
 
-    # Sidebar input
+    # Sidebar output
     groq_api_key, llm, usecase, model = render_sidebar()
 
-    # ❗ Stop app if API key missing
+    #  Stop app if API key missing
     if not groq_api_key:
         st.info("Please paste your Groq API key in the sidebar to continue.")
         st.stop()
