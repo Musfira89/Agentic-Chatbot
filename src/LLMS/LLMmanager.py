@@ -1,6 +1,6 @@
 
-from streamlit import st
-from .groqllm import GROQLLM
+import streamlit as st
+from .groqllm import GroqLLM
 
 
 def initialize_llm(api_key: str, model: str):
@@ -13,7 +13,7 @@ def initialize_llm(api_key: str, model: str):
         current_model = st.session_state.get("current_model")
         
         if "llm" not in st.session_state or current_model != model:
-            llm = GroqLLM(api_key=api_key, model_name=model)
+            llm = GroqLLM(api_key=api_key, model=model)
             
             st.session_state["llm"] = llm
             st.session_state["current_model"] = model

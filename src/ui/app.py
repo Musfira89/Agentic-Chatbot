@@ -6,8 +6,7 @@ from .components import (
     render_chat_history,
     add_message,
 )
-
-from .LLMS.LLMmanager import initialize_llm
+from ..LLMS.LLMmanager import initialize_llm
 
 
 def main():
@@ -21,36 +20,33 @@ def main():
     # Sidebar output
     groq_api_key, llm, usecase, model = render_sidebar()
 
-    #  Stop app if API key missing
+    # Stop app if API key missing
     if not groq_api_key:
         st.info("Please paste your Groq API key in the sidebar to continue.")
         st.stop()
 
-    # Save key in session memory
-    st.session_state["GROQ_API_KEY"] = groq_api_key
-
     # Initialize LLM
-    llm = initialize_llm(
-        api_key=groq_api_key,
-        model=model
-    )
+    llm = initialize_llm(api_key=groq_api_key, model=model)
+    
+    if not llm:
+        st.stop()
 
-    system_prompt = SYSTEM_PROMPTS.get(
-        usecase, SYSTEM_PROMPTS["Basic Chatbot"])
+    # Get system prompt
+    system_prompt = SYSTEM_PROMPTS.get(usecase, SYSTEM_PROMPTS["Basic Chatbot"])
 
+    # Chat setup (FIXED INDENTATION)
+    init_chat_state()
+    render_chat_history()
 
-# Chat setup
-init_chat_state()
-render_chat_history()
+    user_input = st.chat_input("Type your message...")
 
-user_input = st.chat_input("Type your message...")
+    if user_input:
+        add_message("user", user_input)
+        
+        with st.chat_message("user"):
+            st.markdown(user_input)
 
-
-if user_input:
-      add_message("user", user_input)
-      
-
-      with st.chat_message("assistant"):
+        with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 response = llm.chat(
                     user_message=user_input,
@@ -58,7 +54,8 @@ if user_input:
                 )
                 st.markdown(response)
 
-      add_message("assistant", response)
+        add_message("assistant", response)
+        st.rerun()  # Refresh to show new messages
 
 
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage , SystemMessage
 
 #This is the object that actually talks to Groq servers
-
 # Defines a class 
 # Purpose: hide Groq + LangChain complexity / encapsulate
 # then create a constructor that only run once when obj is created
