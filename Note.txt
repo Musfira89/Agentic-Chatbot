@@ -16,3 +16,11 @@ PyPI = Python Package Index (like an app store for Python code)
  with st.sidebar:
  1. with means: everything inside belongs to sidebar.
  2. Any Streamlit element inside will appear on the left sidebar.
+
+
+ dont use ui in llm part
+ LLM layer should be UI-agnostic
+
+LLM should not call st.error()
+
+Error handling should be one place only

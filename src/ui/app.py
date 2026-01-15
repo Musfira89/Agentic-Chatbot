@@ -1,5 +1,5 @@
 import streamlit as st
-from .config import PAGE_TITLE
+from .config import PAGE_TITLE, SYSTEM_PROMPTS
 from .components import (
     render_sidebar,
     init_chat_state,
@@ -7,11 +7,12 @@ from .components import (
     add_message,
 )
 
+from .LLMS.LLMmanager import initialize_llm
+
 
 def main():
     st.set_page_config(
         page_title=PAGE_TITLE,
-        page_icon="🤖",
         layout="wide"
     )
 
@@ -28,21 +29,36 @@ def main():
     # Save key in session memory
     st.session_state["GROQ_API_KEY"] = groq_api_key
 
-    # Chat setup
-    init_chat_state()
-    render_chat_history()
+    # Initialize LLM
+    llm = initialize_llm(
+        api_key=groq_api_key,
+        model=model
+    )
 
-    user_input = st.chat_input("Type your message...")
+    system_prompt = SYSTEM_PROMPTS.get(
+        usecase, SYSTEM_PROMPTS["Basic Chatbot"])
 
-    if user_input:
-        add_message("user", user_input)
 
-        with st.chat_message("assistant"):
+# Chat setup
+init_chat_state()
+render_chat_history()
+
+user_input = st.chat_input("Type your message...")
+
+
+if user_input:
+      add_message("user", user_input)
+      
+
+      with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                response = f"Using {model} for {usecase}"
+                response = llm.chat(
+                    user_message=user_input,
+                    system_prompt=system_prompt
+                )
                 st.markdown(response)
 
-        add_message("assistant", response)
+      add_message("assistant", response)
 
 
 if __name__ == "__main__":
